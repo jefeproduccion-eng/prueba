@@ -3,317 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Calculadora de Créditos Colombia (V2.0)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Restaurante Campestre La Ceiba | Diversión y Sabor en Repelón</title>
+    <!-- Tailwind CSS para un diseño moderno y rápido -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Volkhov:wght@700&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-        body {
-            background-color: #0f172a;
-            color: #f1f5f9;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: #1e293b;
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid #334155;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 35px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 25px;
-        }
-        h1 { color: #38bdf8; font-size: 28px; margin-bottom: 8px; }
-        p.subtitle { color: #94a3b8; font-size: 14px; }
-        .badge {
-            background: #0284c7;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            vertical-align: middle;
-            margin-left: 8px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 35px;
-        }
-        @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-        .form-group {
-            margin-bottom: 22px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #94a3b8;
-            font-size: 14px;
-        }
-        input, select {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #475569;
-            border-radius: 8px;
-            font-size: 15px;
-            background-color: #0f172a;
-            color: white;
-            transition: all 0.3s;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-        }
-        .results-box {
-            background-color: #0f172a;
-            border-radius: 12px;
-            padding: 25px;
-            border-top: 4px solid #38bdf8;
-        }
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid #334155;
-        }
-        .result-item:last-child { border-bottom: none; }
-        .result-label { font-weight: 500; color: #94a3b8; }
-        .result-value { font-weight: 700; color: #f8fafc; font-size: 18px; }
-        .highlight { color: #34d399; font-size: 22px; }
-        .info-card {
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #cbd5e1;
-            line-height: 1.6;
-        }
-        .tabs-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            background: #0f172a;
-            padding: 6px;
-            border-radius: 8px;
-        }
-        .tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        .tab-btn.active {
-            background: #38bdf8;
-            color: #0f172a;
-        }
+        body { font-family: 'Poppins', sans-serif; }
+        .font-title { font-family: 'Volkhov', serif; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Simulador Multicrédito Colombiano <span class="badge">V2.0 PRO</span></h1>
-            <p class="subtitle">Simulación avanzada: Vivienda, Vehículo, Consumo y Tarjetas con tasas de usura y seguros estimados</p>
-        </header>
+<body class="bg-stone-50 text-stone-800 scroll-smooth">
 
-        <div class="tabs-container">
-            <button class="tab-btn active" onclick="cambiarTipo('hipotecario')">🏠 Hipotecario / Leasing</button>
-            <button class="tab-btn" onclick="cambiarTipo('vehiculo')">🚗 Vehículo</button>
-            <button class="tab-btn" onclick="cambiarTipo('libre')">💰 Libre Inversión</button>
-            <button class="tab-btn" onclick="cambiarTipo('tarjeta')">💳 Tarjeta de Crédito</button>
-        </div>
-        
-        <div class="grid">
-            <div>
-                <div class="form-group">
-                    <label id="lblMonto" for="montoPrincipal">Monto Total del Crédito / Valor Inmueble ($ COP)</label>
-                    <input type="number" id="montoPrincipal" value="150000000" step="5000000">
-                </div>
-                
-                <div class="form-group" id="divCuotaInicial">
-                    <label for="cuotaInicial">Cuota Inicial ($ COP)</label>
-                    <input type="number" id="cuotaInicial" value="45000000" step="5000000">
-                </div>
-
-                <div class="form-group" id="divAmortizacion">
-                    <label for="tipoSistema">Modalidad de Moneda</label>
-                    <select id="tipoSistema">
-                        <option value="pesos">Pesos Colombianos (Cuota Fija)</option>
-                        <option value="uvr">UVR (Indexado a Inflación / IPC)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="tasaAnual">Tasa de Interés Nominal/Efectiva Propuesta (E.A. %)</label>
-                    <input type="number" id="tasaAnual" value="11.8" step="0.05">
-                </div>
-
-                <div class="form-group">
-                    <label id="lblPlazo" for="plazo">Plazo de Amortización (Meses)</label>
-                    <input type="number" id="plazo" value="180" min="1" max="360">
-                </div>
-
-                <div class="form-group">
-                    <label for="seguroMes">Seguro de Vida Obligatorio + Todo Riesgo Estimado (Mensual $ COP)</label>
-                    <input type="number" id="seguroMes" value="45000" step="5000">
-                </div>
+    <!-- NAV BAR -->
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md z-50 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-bold tracking-wider text-emerald-700 font-title">LA CEIBA</span>
+                <span class="text-xs bg-amber-500 text-white px-2 py-0.5 rounded-full font-semibold">Campestre</span>
             </div>
-            
-            <div>
-                <h2 style="font-size: 18px; margin-bottom: 15px; color: #38bdf8;">Análisis Financiero del Escenario</h2>
-                <div class="results-box">
-                    <div class="result-item">
-                        <span class="result-label">Capital Neto a Financiar</span>
-                        <span class="result-value" id="resFinanciar">$ 0</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Tasa Periódica Mes Vencido (M.V.)</span>
-                        <span class="result-value" id="resTasaMes">0.00%</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Cuota Base (Solo Capital + Interés)</span>
-                        <span class="result-value" id="resCuotaBase">$ 0</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Seguros Mensuales Adicionados</span>
-                        <span class="result-value" id="resSeguro">$ 0</span>
-                    </div>
-                    <div class="result-item" style="background: rgba(52, 211, 153, 0.05); padding: 10px; border-radius: 6px;">
-                        <span class="result-label" style="color: #34d399; font-weight: 600;">CUOTA MENSUAL TOTAL</span>
-                        <span class="result-value highlight" id="resCuotaTotal">$ 0</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Costo Total de Intereses Generados</span>
-                        <span class="result-value" id="resIntereses">$ 0</span>
-                    </div>
-                </div>
-                
-                <div class="info-card" id="infoDinamica">
-                    <strong>Análisis del Sistema:</strong> Los créditos hipotecarios en Colombia permiten plazos amplios y tasas competitivas. Recuerde validar si aplica a subsidios del gobierno (Mi Casa Ya / Cobertura FRECH).
-                </div>
+            <div class="hidden md:flex items-center gap-8 font-medium text-stone-600">
+                <a href="#inicio" class="hover:text-emerald-600 transition-colors">Inicio</a>
+                <a href="#experiencias" class="hover:text-emerald-600 transition-colors">Experiencias</a>
+                <a href="#menu" class="hover:text-emerald-600 transition-colors">Gastronomía</a>
+                <a href="#contacto" class="hover:text-emerald-600 transition-colors">Ubicación</a>
+            </div>
+            <a href="https://wa.me/573000000000?text=Hola!%20Quiero%20reservar%20un%20día%20de%20sol%20en%20La%20Ceiba" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-full font-semibold shadow-md shadow-emerald-200 transition-all flex items-center gap-2 text-sm">
+                <i class="fab fa-whatsapp text-lg"></i> Reservar Cupo
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-20 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1920&q=80');">
+        <div class="absolute inset-0 bg-gradient-to-t from-stone-50 via-transparent to-transparent"></div>
+        <div class="relative max-w-4xl mx-auto text-center px-4 z-10 text-white mt-12">
+            <span class="bg-amber-500 text-stone-950 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest inline-block mb-4 shadow-lg">El plan familiar perfecto en Repelón</span>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-title mb-6 leading-tight drop-shadow-md">
+                Naturaleza, Piscina y el Auténtico Sabor Campestre
+            </h1>
+            <p class="text-lg md:text-xl text-stone-100 max-w-2xl mx-auto mb-10 font-light drop-shadow">
+                Desconéctate de la rutina. Disfruta con tus hijos de nuestra granja interactiva, piscinas refrescantes y la mejor gastronomía del Atlántico.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#experiencias" class="bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold px-8 py-4 rounded-xl shadow-xl transition-all transform hover:-translate-y-0.5 text-center">
+                    Ver Atracciones
+                </a>
+                <a href="#menu" class="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-xl border border-white/40 transition-all text-center">
+                    Ver Menú Criollo
+                </a>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script>
-        let tipoCreditoActivo = 'hipotecario';
+    <!-- COUNTERS / HIGHLIGHTS -->
+    <section class="relative -mt-16 max-w-6xl mx-auto px-4 z-20">
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center border border-stone-100">
+            <div>
+                <p class="text-3xl md:text-4xl font-bold text-emerald-600 font-title">Piscinas</p>
+                <p class="text-xs md:text-sm text-stone-500 mt-1">Para adultos y niños</p>
+            </div>
+            <div class="border-l border-stone-100">
+                <p class="text-3xl md:text-4xl font-bold text-amber-500 font-title">Granjita</p>
+                <p class="text-xs md:text-sm text-stone-500 mt-1">Animales campestres</p>
+            </div>
+            <div class="border-l border-stone-100">
+                <p class="text-3xl md:text-4xl font-bold text-emerald-600 font-title">100%</p>
+                <p class="text-xs md:text-sm text-stone-500 mt-1">Sabor Tradicional</p>
+            </div>
+            <div class="border-l border-stone-100">
+                <p class="text-3xl md:text-4xl font-bold text-amber-500 font-title">Repelón</p>
+                <p class="text-xs md:text-sm text-stone-500 mt-1">Atlántico, Colombia</p>
+            </div>
+        </div>
+    </section>
 
-        function cambiarTipo(tipo) {
-            tipoCreditoActivo = tipo;
-            
-            // Actualizar botones de pestañas
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+    <!-- EXPERIENCIAS (PISCINA Y ANIMALES) -->
+    <section id="experiencias" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <h2 class="text-xs font-bold text-emerald-600 uppercase tracking-widest mb-2">Diversión Garantizada</h2>
+            <p class="text-3xl md:text-4xl font-bold font-title text-stone-900">Un paraíso diseñado para los más pequeños (¡y los grandes también!)</p>
+        </div>
 
-            // Modificar visibilidad y valores sugeridos según la modalidad colombiana estándar
-            const divCuotaInicial = document.getElementById('divCuotaInicial');
-            const divAmortizacion = document.getElementById('divAmortizacion');
-            const lblMonto = document.getElementById('lblMonto');
-            const lblPlazo = document.getElementById('lblPlazo');
-            
-            if (tipo === 'hipotecario') {
-                lblMonto.textContent = "Valor del Inmueble ($ COP)";
-                lblPlazo.textContent = "Plazo de Amortización (Meses)";
-                divCuotaInicial.style.display = 'block';
-                divAmortizacion.style.display = 'block';
-                document.getElementById('montoPrincipal').value = "150000000";
-                document.getElementById('cuotaInicial').value = "45000000";
-                document.getElementById('tasaAnual').value = "11.5";
-                document.getElementById('plazo').value = "240";
-                document.getElementById('seguroMes').value = "55000";
-                document.getElementById('infoDinamica').innerHTML = "<strong>Análisis del Sistema:</strong> Financiamiento máx del 70% para vivienda NO VIS y 80% para VIS. Estabilidad a largo plazo mediante cuotas fijas en pesos.";
-            } else if (tipo === 'vehiculo') {
-                lblMonto.textContent = "Monto a Financiar el Vehículo ($ COP)";
-                lblPlazo.textContent = "Plazo de Amortización (Meses)";
-                divCuotaInicial.style.display = 'none';
-                divAmortizacion.style.display = 'none';
-                document.getElementById('montoPrincipal').value = "60000000";
-                document.getElementById('tasaAnual').value = "15.5";
-                document.getElementById('plazo').value = "72";
-                document.getElementById('seguroMes').value = "80000"; // Incluye póliza auto todo riesgo endosada
-                document.getElementById('infoDinamica').innerHTML = "<strong>Análisis del Sistema:</strong> El crédito de vehículo suele exigir pignoración del automotor. Las tasas varían si el carro es nuevo o usado.";
-            } else if (tipo === 'libre') {
-                lblMonto.textContent = "Monto del Crédito de Consumo ($ COP)";
-                lblPlazo.textContent = "Plazo Solicitado (Meses)";
-                divCuotaInicial.style.display = 'none';
-                divAmortizacion.style.display = 'none';
-                document.getElementById('montoPrincipal').value = "20000000";
-                document.getElementById('tasaAnual').value = "22.0";
-                document.getElementById('plazo').value = "48";
-                document.getElementById('seguroMes').value = "15000";
-                document.getElementById('infoDinamica').innerHTML = "<strong>Análisis del Sistema:</strong> Libre inversión/Consumo. Tasas más elevadas sujetas al perfil de riesgo. Alerta con la tasa de usura fijada por la Superfinanciera.";
-            } else if (tipo === 'tarjeta') {
-                lblMonto.textContent = "Cupo Utilizado / Avance / Compra ($ COP)";
-                lblPlazo.textContent = "Diferido a Cuotas (Meses)";
-                divCuotaInicial.style.display = 'none';
-                divAmortizacion.style.display = 'none';
-                document.getElementById('montoPrincipal').value = "5000000";
-                document.getElementById('tasaAnual').value = "28.5"; // Cercano a la usura habitual de tarjetas
-                document.getElementById('plazo').value = "24";
-                document.getElementById('seguroMes').value = "6000"; // Seguro de cartera común
-                document.getElementById('infoDinamica').innerHTML = "<strong>Análisis del Sistema:</strong> Compras diferidas a 1 sola cuota por lo general no generan intereses corrientes en Colombia. Evite los avances en efectivo debido a su alto costo inmediato.";
-            }
-            
-            calcularTodo();
-        }
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <!-- Bloque Piscina -->
+            <div class="space-y-6 order-2 md:order-1">
+                <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 text-xl font-bold">
+                    <i class="fas fa-swimming-pool"></i>
+                </div>
+                <h3 class="text-2xl font-bold font-title text-stone-900">Piscinas con agua cristalina bajo el sol caribeño</h3>
+                <p class="text-stone-600 leading-relaxed">
+                    Contamos con un área de piscina completamente segura para niños, con profundidades adecuadas y espacios vigilados, además de una piscina principal para que los adultos se relajen mientras disfrutan de un buen cóctel o jugo natural.
+                </p>
+                <ul class="space-y-3 text-stone-600 font-medium">
+                    <li><i class="fas fa-check text-emerald-500 mr-2"></i> Zona de camastros y sombrillas</li>
+                    <li><i class="fas fa-check text-emerald-500 mr-2"></i> Toboganes e inflables infantiles</li>
+                    <li><i class="fas fa-check text-emerald-500 mr-2"></i> Pasadías económicos de Martes a Domingo</li>
+                </ul>
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-lg order-1 md:order-2 h-96 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=800&q=80');"></div>
+        </div>
 
-        function calcularTodo() {
-            const montoPrincipal = parseFloat(document.getElementById('montoPrincipal').value) || 0;
-            const cuotaInicial = tipoCreditoActivo === 'hipotecario' ? (parseFloat(document.getElementById('cuotaInicial').value) || 0) : 0;
-            const tasaAnual = parseFloat(document.getElementById('tasaAnual').value) || 0;
-            const plazo = parseInt(document.getElementById('plazo').value) || 0;
-            const seguroMes = parseFloat(document.getElementById('seguroMes').value) || 0;
+        <div class="grid md:grid-cols-2 gap-12 items-center mt-24">
+            <!-- Bloque Animales -->
+            <div class="rounded-3xl overflow-hidden shadow-lg h-96 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=800&q=80');"></div>
+            <div class="space-y-6">
+                <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 text-xl font-bold">
+                    <i class="fas fa-cow"></i>
+                </div>
+                <h3 class="text-2xl font-bold font-title text-stone-900">Contacto real con la naturaleza y animales</h3>
+                <p class="text-stone-600 leading-relaxed">
+                    En <strong>La Ceiba</strong>, los niños no solo ven los animales en pantallas; aquí pueden interactuar, alimentar y conocer de cerca a nuestros caballitos, cabras, aves exóticas y conejos en un ambiente controlado y pedagógico.
+                </p>
+                <ul class="space-y-3 text-stone-600 font-medium">
+                    <li><i class="fas fa-check text-amber-500 mr-2"></i> Paseos guiados en poni para niños</li>
+                    <li><i class="fas fa-check text-amber-500 mr-2"></i> Alimentación interactiva de aves</li>
+                    <li><i class="fas fa-check text-amber-500 mr-2"></i> Senderos verdes y árboles centenarios</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-            const capitalFinanciar = montoPrincipal - cuotaInicial;
-            document.getElementById('resFinanciar').textContent = '$ ' + capitalFinanciar.toLocaleString('es-CO');
+    <!-- GASTRONOMÍA / MENU -->
+    <section id="menu" class="bg-emerald-950 text-white py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">Delicias del Campo</h2>
+                <p class="text-3xl md:text-4xl font-bold font-title">Nuestra Cocina: Tradición y Fogón Criollo</p>
+                <p class="text-emerald-200/80 mt-4">Platos preparados al instante con ingredientes locales frescos de las tierras de Repelón.</p>
+            </div>
 
-            if (capitalFinanciar <= 0 || plazo <= 0 || tasaAnual <= 0) {
-                document.getElementById('resCuotaBase').textContent = "$ 0";
-                document.getElementById('resCuotaTotal').textContent = "$ 0";
-                document.getElementById('resIntereses').textContent = "$ 0";
-                return;
-            }
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Plato 1 -->
+                <div class="bg-emerald-900/40 rounded-2xl overflow-hidden border border-emerald-800/60 backdrop-blur-sm group hover:border-amber-400 transition-all">
+                    <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-300" style="background-image: url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-xl font-bold font-title">Sancocho de Gallina</h4>
+                            <span class="text-amber-400 font-bold">Criollo</span>
+                        </div>
+                        <p class="text-sm text-emerald-100/70">Hecho en fogón de leña, acompañado de arroz de pato o blanco, aguacate y arepa limpia.</p>
+                    </div>
+                </div>
+                <!-- Plato 2 -->
+                <div class="bg-emerald-900/40 rounded-2xl overflow-hidden border border-emerald-800/60 backdrop-blur-sm group hover:border-amber-400 transition-all">
+                    <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-300" style="background-image: url('https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-xl font-bold font-title">Pescado Frito Especial</h4>
+                            <span class="text-amber-400 font-bold">Fresco</span>
+                        </div>
+                        <p class="text-sm text-emerald-100/70">Mojarra o Bocachico fresco de la región, frito a la perfección con patacones crujientes y ensalada de la casa.</p>
+                    </div>
+                </div>
+                <!-- Plato 3 -->
+                <div class="bg-emerald-900/40 rounded-2xl overflow-hidden border border-emerald-800/60 backdrop-blur-sm group hover:border-amber-400 transition-all">
+                    <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-300" style="background-image: url('https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-xl font-bold font-title">Picada Familiar Ceiba</h4>
+                            <span class="text-amber-400 font-bold">Para Compartir</span>
+                        </div>
+                        <p class="text-sm text-emerald-100/70">Variedad de carnes seleccionadas (cerdo, res, chorizo), yuca frita, papitas y el toque secreto campestre.</p>
+                    </div>
+                </div>
+            </div>
 
-            // Convertir de Efectiva Anual (E.A) a Mensual Vencida (M.V)
-            const tasaMensual = Math.pow(1 + (tasaAnual / 100), 1 / 12) - 1;
-            document.getElementById('resTasaMes').textContent = (tasaMensual * 100).toFixed(2) + '%';
+            <div class="text-center mt-12">
+                <a href="https://wa.me/573000000000?text=Hola!%20Me%20gustaría%20ver%20la%20carta%20completa" target="_blank" class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-stone-950 font-bold px-8 py-3.5 rounded-xl shadow-lg transition-colors">
+                    <i class="fas fa-utensils"></i> Solicitar Menú Completo por WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
 
-            // Cálculo de la cuota base usando amortización constante (sistema francés)
-            const cuotaBase = (capitalFinanciar * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -plazo));
-            const cuotaTotal = cuotaBase + seguroMes;
-            const totalIntereses = (cuotaBase * plazo) - capitalFinanciar;
+    <!-- SECCIÓN UBICACIÓN Y CONTACTO -->
+    <section id="contacto" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden grid md:grid-cols-2 border border-stone-100">
+            <div class="p-8 md:p-12 flex flex-col justify-center space-y-6">
+                <span class="text-emerald-600 font-bold text-sm tracking-widest uppercase">¿Cómo llegar?</span>
+                <h3 class="text-3xl font-bold font-title text-stone-900">Te esperamos en Repelón, Atlántico</h3>
+                <p class="text-stone-600">
+                    Estamos ubicados estratégicamente para ofrecerte un escape de la ciudad sin viajar largas distancias. Aire puro, parqueadero privado vigilado y total comodidad para tu familia.
+                </p>
+                <div class="space-y-4 text-stone-700">
+                    <p class="flex items-center gap-3"><i class="fas fa-map-marker-alt text-emerald-600 text-lg"></i> Municipio de Repelón, Atlántico (A pocos minutos de la vía principal)</p>
+                    <p class="flex items-center gap-3"><i class="fas fa-clock text-emerald-600 text-lg"></i> Abierto de Martes a Domingo: 9:00 AM - 6:00 PM</p>
+                    <p class="flex items-center gap-3"><i class="fas fa-phone-alt text-emerald-600 text-lg"></i> +57 300 123 4567</p>
+                </div>
+                <div class="pt-4">
+                    <a href="https://maps.google.com" target="_blank" class="bg-stone-900 hover:bg-stone-800 text-white px-6 py-3 rounded-xl font-semibold transition-colors inline-flex items-center gap-2 shadow-md">
+                        <i class="fas fa-location-arrow"></i> Abrir en Google Maps
+                    </a>
+                </div>
+            </div>
+            <!-- Mock de mapa o imagen del lugar (en producción se cambia por iframe de google maps) -->
+            <div class="bg-stone-200 relative min-h-80 h-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=800&q=80');">
+                <div class="absolute inset-0 bg-emerald-900/10 mix-blend-multiply"></div>
+            </div>
+        </div>
+    </section>
 
-            document.getElementById('resCuotaBase').textContent = '$ ' + Math.round(cuotaBase).toLocaleString('es-CO');
-            document.getElementById('resSeguro').textContent = '$ ' + Math.round(seguroMes).toLocaleString('es-CO');
-            document.getElementById('resCuotaTotal').textContent = '$ ' + Math.round(cuotaTotal).toLocaleString('es-CO');
-            document.getElementById('resIntereses').textContent = '$ ' + Math.round(totalIntereses).toLocaleString('es-CO');
-        }
+    <!-- FOOTER -->
+    <footer class="bg-stone-900 text-stone-400 py-12 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <p class="text-white font-title font-bold text-xl">RESTAURANTE CAMPESTRE LA CEIBA</p>
+                <p class="text-xs mt-1 text-stone-500">&copy; 2026 Todos los derechos reservados. Repelón, Atlántico.</p>
+            </div>
+            <div class="flex gap-4 text-xl">
+                <a href="#" class="hover:text-amber-400 transition-colors"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-amber-400 transition-colors"><i class="fab fa-facebook"></i></a>
+                <a href="https://wa.me/573000000000" class="hover:text-amber-400 transition-colors"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
 
-        // Listener para recálculo dinámico en cualquier interacción
-        document.querySelectorAll('input, select').forEach(element => {
-            element.addEventListener('input', calcularTodo);
-        });
+    <!-- BOTÓN FLOTANTE WHATSAPP -->
+    <a href="https://wa.me/573000000000?text=Hola!%20Quiero%20más%20información%20sobre%20el%20Restaurante%20La%20Ceiba" target="_blank" class="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-2xl z-50 transform hover:scale-110 transition-transform">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-        // Inicialización en la carga original
-        calcularTodo();
-    </script>
 </body>
 </html>
